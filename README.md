@@ -10,7 +10,7 @@
   
 ### 1. __Name Space:__
 
-- Name space is about how domain names are structured and used in terms of what makes a name valid, what kind of format it should have, what characters and symbols are allowed in it. as well as how names are interpreted
+- Name space is about how domain names are structured and used in terms of what makes a name valid, what kind of format it should have, what characters and symbols are allowed in it, as well as how names are interpreted.
   - __Domain Name Format:__
     - From left to right:
       - Root: represented by a dot `.`
@@ -19,7 +19,7 @@
       - Third-level Domain: e.g. www (more of a naming convention rather than a necessity)
     - TLD and Second-Level Domain form the Zone Apex/ Naked Domain
     - The components of a domain name are known as labels, with the roots being said to have a label of null
-    - Each label is a subdomain of its parent domain. i.e. www is a subdomain of example.com
+    - Each label is a subdomain of its parent domain. i.e. `www` is a subdomain of `example.com`
     - There is no maximum number of subdomains that can be used, but the entire FQDN cannot exceed 255 characters(including the periods)
     - DNS names are case insensitive
     - *Fully Qualified Domain Name(FQDN):* the absolute reference to a domain name. e.g `www.example.com.`
@@ -173,8 +173,9 @@
       - The client must iterate by sending a new request to this referred server, which again will return an answer or another referral.
       - The process continues until the correct server is found and an authoritative answer is given. The queries involved in this process are referred to as iterative, while the service responses are known as referrals.
     - Iterative Name Resolution image:
-    ![iterative name resolution](https://cdn.ttgtmedia.com/rms/onlineImages/DNS_server_02.jpg)
-    ![iterative name resolution](https://lh3.googleusercontent.com/-jjjSSsJ4NI6LpUyzl0qlL46opK_MaUEzBD4SXU1YQtZHESJCGMe2yvE9ZE72AOqj4NFlQDZOirSX7yPz7qLE94st3EjzETHTcVGLAZL2t1bKYVkVRZwU6B1idPOh11pPClma5XZ)
+    - ![iterative name resolution](https://cdn.ttgtmedia.com/rms/onlineImages/DNS_server_02.jpg)
+    -
+    - ![iterative name resolution](https://lh3.googleusercontent.com/-jjjSSsJ4NI6LpUyzl0qlL46opK_MaUEzBD4SXU1YQtZHESJCGMe2yvE9ZE72AOqj4NFlQDZOirSX7yPz7qLE94st3EjzETHTcVGLAZL2t1bKYVkVRZwU6B1idPOh11pPClma5XZ)
   - __Recursive Name Resolution:__
     - Upon receiving a recursive query, the server checks if it possesses the information requested, in which case, it passes an aswer back to the client.
     - If it doesn't, instead of simply referring to the client with a referral to a point like in iterative resolution, the  server instead assumes the role of the client and it begins looking for the requested information on behalf of the original client.
@@ -261,9 +262,149 @@
 
 ### 3. __Name Registration:__
 
+- Name registration involves the regisrtation of domains.
 - Name registration is how a domain is registered, how its uniqueness is guaranteed, and what are the registration authorities responsible for the name assignment process
-  - __Domain Name Registration Hierarchy:__
-  - ICANN's main role is to oversee the huge and complex interconnected network of unique identifiers that allow computers on the internet to find one another.
-  - Each registry is responsible for allocation IP ranges to ISPs across a specific region.
-  - <https://www.iana.org/numbers>
-  -
+- __Domain Name Registration Hierarchy:__
+![Domain Name Registration Hierarchy](https://149463845.v2.pressablecdn.com/wp-content/uploads/2017/07/Domain_Industry_Hierarchy-1-768x513.png)
+
+  - A domain represents a public identity on the internet and it is used to identify the IP address of the computer system hosting a web content.
+  - To ensure that each domain is unique, name registration has to be processed within a globally distributed framework designed to enforce a certain set of rules; that framework is the domain name registration hierarchy
+  - Internet Corporation for Assigned Names and Numbers (ICANN)'s main role is to oversee the huge and complex interconnected network of unique identifiers that allow computers on the internet to find one another.
+  - References:
+    - <https://www.iana.org/numbers>
+    - <https://www.cyberpunk.rs/domain-name-hierarchy-registry-vs-registrar#:~:text=Domain%20registration%20and%20management%20involves,for%20Assigned%20Names%20and%20Numbers).>
+    - It is responsible for managing gTLDs and ccTLDs.
+    - Managing how root name server systems function
+    - Coordinating how IP addresses are supplied to avoid repetition or clashes
+    - Maintaining a central repositories of IP addressesEach registry is responsible for obtaining
+  - *Registries:*
+    - Each registry is responsible for obtaining IP ranges from ICANN in order to allocate them to ISPs across a specific geographic region.
+    - e.g. VeriSign
+  - *Registrars:*
+    - These are ICANN accredited organizations responsible for processing the registration of domain names.
+    - e.g. GoDaddy, Namecheap, Bluehost
+  - *Resellers:*
+    - These are third party companies that offer/sell domain name registration services through registrars
+    - e.g. Route53: reseller for two registrars: Amazon Registrar for gTLDs and Gandi for all other TLDs
+  - *Registrants:*
+    - The people or organizations who register domains through a registrar or a reseller
+- __Domain Name registration Process:__
+  - The process of a domain name consists of the following steps:
+    - The registrant chooses a domain name and submits a request to register it with a register or an ICANN accredited registrar.
+    - Provided that the domain name is available, the registrar registers the name and then creates a WHOIS record
+      - The WHOIS record contains the registrant's name and contact information, the name and contact information of the registrar, registration date, the name servers, the most recent update and the expiration date
+      - The WHOIS record may also provide the adinistrative and techincal information of the registrant
+    - The registrar will then send you domain name request along with the contact and technical information of the domain name to the appropriate registry.
+    - The registry then files allinformation provided and it add the domain zone file to the master service, which will tell other servers on the internet where your website is located.
+- __Choosing a TLD:__
+  - As of June 2020, the entire list consists  of more than 1500 TLDs to choose from, that span at least six distinctive categories and the list keeps expanding
+  - The choice of TLD needs to be dictated by the specific use case:
+    - Is there a support for DNSSEC(DNS Security mechanism that provides protection against certain attacks such as DNS Cache Poisioning)?
+      - TLDs such as .aero, .pro, .travel are a few of the TLDs that do not support the security feature.
+    - Is there support for internationalized domain names (IDNs)?
+      - i.e domain ames that include non-ascii characters like with Arabic and Korean languages.
+    - Is there support for domain privacy to protect you from people finding your personal information in the registration records?
+      - Many ccTLDs such as .us, .eu do not have privacy
+    - What is your target audience?
+      - If your organization is region specific, such as a health care provider offering services only in Nairobi, using Kenya's ccTLD would make more sense than a gTLD
+      - If the org's audience is an even more specific location e.g. Wales, a geoTLD such as .wales would make more sense
+    - What is your particular field?
+      - If the website is going to advertise your business, you might want to use an industry specific TLD
+    - Does the TLD you are intersted in have any local presence requirements?
+      - Some TLDs like Canada's .ca, China's .cn and US's .us do have local presence requirements, which means that only citizens and entities native to those countries are permitted to register domains within those TLDs
+- __Choosing a Second-Level Domain:__
+  - Your second-level domain can have any form you like as long as the name you pick follows the rules of the domain name format.
+  - Suggestions:
+    - __DO's__
+      - Use Keywords that reflect your industry
+      - Use localized keywords, if applicable. Like the name of the area or city you operate in
+      - Try to keep it short; with less than ten characters
+      - Ensure it is easy to spell, pronouce, and remember
+    - __Do Nots__
+      - Try not to use hyphens, numbers or acronyms
+  - Check if the chosen domain name is available.
+  - Check if it is within your budget
+  - Once you have registered your domain, then you own that name space. This means that you will not need to register any subdomains you might create later on.
+  - A common strategy is to buy the same domain with multiple TLDs and point them all to a single one
+  - Buying misspellings of your domain name is the main way of combatting *typosquatting* or *URL hijacking*
+  - To check common domain names mispellings: <https://dnstwist.it/>
+- __Choosing a Registrar:__
+  - Factors to take into consideration when choosing a registrar:
+    - Pricing
+      - Registrar's registration fee
+      - Renewal fee
+      - Other potential charges for things like domain transfers
+      - Potential cost benefits like bulk pricing options or promotional deals like registering a domain name for several years at a cheaper price
+    - Add-on Services
+      - Web hosting services
+      - Word press hosting
+      - Website builders
+      - Email hosting
+      - Brokerge services
+      - Privacy protection
+      - SSL protection
+      - Customer service support
+    - Supported TLDs
+    - Policies, such as the registrar's policies on domain transfers, domain expiration...
+  - It is recommended that you register your domain name on the registrar buthost it on another provider, simply because it is usually easier to switch hosting companies if required later on, provided that the domain name is hosted on a platform different to the one it was registered on.
+  - A registered domain that is not associated with a service such as a website is known as a *parked domain*
+- __EPP Status Codes:__
+  - Reference: <https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en>
+  - Extensible Provisioning Protocol (EPP) domain status codes, also called domain name status codes, indicate the status of a domain name registration.
+  - Every domain has at least one status code, if not more.
+  - Each EPP code provides usefl information about a domain that comes in handy for operations such as:
+    - Troubleshooting domain related issues
+    - Domain renewals
+    - Domain transfers between registrars
+  - There are two different types of EPP Status codes; client and server codes
+    - Client status codes are set by the registrars and depending on the registrar, they are set upon registering the domain or when requesting it
+    - Server status codes are set by the registries and they take precedence over client codes
+  - Most common EPP codes:
+    - Client codes:
+      - *clientHold:*
+        - It tells your domain's registry not to activate your domain in the DNS and as a consequence, it will not resolve
+        - It is an uncommon status that is usually enacted during legal disputes, non-payment or when your domain is subject to deletion
+      - *clientTransferProhibited:*
+        - It tells your domain's registry to reject requests to transfer the domain name from your current registrar to another
+      - *clientUpdateProhibited:*
+        - Tells your domain registry to reject requests to update the domain.
+    - Server codes:
+      - *ok:*
+        - This is the standard status for a domain meaning that it has no pending operations or prohibitions
+      - *autoRenewPeriod:*
+        - This is a grace period provided after a domain name registration period expires and is extended or renewed automatically by the registry.
+        - If a registrar deletes the domain name during this period, the registry provides a credit to the registrar for the cost of renewal.
+      - *serverTransferProhibited:*
+        - It prevents your domain from being transferred from your current registrar to another
+        - It is an uncommon status that is usually enacted during legal or other disputes at your request or when a redemption period status is in place
+  - You can check the EPP status code of any domain name you are interested in at <https://lookup.icann.org/en>
+
+## DNS Data Storage
+
+- __Zones and Resource Records:__
+  - Name servers store DNS data in a databse called a 'zone'.
+  - There are two types of zones:
+    - Forward lookup zone
+      - Typically used for resolving names to IP addresses and it is the zone where most of the DNS data is stored
+    - Reverse lookup zone
+      - Mainly stores information used for reverse name resolution
+  - Each of these zones is a collection of *resource records* (RRs).
+    - Just like the records of any database, they are sets of fields organized in rows.
+  - There are many types of resource records in DNS and each resource record type contains a specific set of data.
+    - e.g. the A record contains a domain name and its associated IPv4 address, while the AAAA record contains the domain name along with its corresponding IPv6 address
+  - Despite their differences, all resource record types share a common resource record format which consists of the following parameters:
+    - Name
+    - Type: Each RR has a different value.
+      - .e.g. A record has a type value of 1, while NS record has a type value of 2
+    - Class (IN/CH/HS): 99% cases should be IN for internet. There is also the Chaos class (CH) and Hesiod Class (HS)
+    - TTL (Time to Live): defines the length of time that the resource record remains cached for
+    - Resource Data length (RDLength): Indicates the size of the resource data field in bytes
+    - Resource Data (RData): The actual data that the resource record stores
+- __Common Record Resource Types:__
+  - __SOA Record:__
+    - Start of Authority (SOA) record indicates the beginning of a zone and it should be the first resource record specified in any zone file
+    -
+
+## References
+
+- <https://en.wikipedia.org/wiki/Top-level_domain>
