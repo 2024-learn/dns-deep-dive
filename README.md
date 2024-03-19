@@ -352,7 +352,7 @@
   - Reference: <https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en>
   - Extensible Provisioning Protocol (EPP) domain status codes, also called domain name status codes, indicate the status of a domain name registration.
   - Every domain has at least one status code, if not more.
-  - Each EPP code provides usefl information about a domain that comes in handy for operations such as:
+  - Each EPP code provides useful information about a domain that comes in handy for operations such as:
     - Troubleshooting domain related issues
     - Domain renewals
     - Domain transfers between registrars
@@ -382,7 +382,7 @@
 ## DNS Data Storage
 
 - __Zones and Resource Records:__
-  - Name servers store DNS data in a databse called a 'zone'.
+  - Name servers store DNS data in a database called a 'zone'.
   - There are two types of zones:
     - Forward lookup zone
       - Typically used for resolving names to IP addresses and it is the zone where most of the DNS data is stored
@@ -403,6 +403,273 @@
 - __Common Record Resource Types:__
   - __SOA Record:__
     - Start of Authority (SOA) record indicates the beginning of a zone and it should be the first resource record specified in any zone file
+    - There can only be one start of authority record per zone
+    - __Format__
+
+    ```SOA format
+      <domain name> <TTL> <resource record class> SOA <m-name> <r-name>(
+          <serial number>
+          <refresh interval>
+          <retry interval>
+          <expire interval>
+          <minimum>
+      )
+    ```
+
+    - `m-name`: name of the primary authoritative name server for the zone and it is the name server that secondary DNS servers receive updates from in relation to the zone.
+    - `r-name`: signifies the email address of the administrator responsible for the zone.
+      - Although the value represents an email address, there is no @ sign in it. As far as SOA is concerned, `info.example.com` is the same as `info@example.com`.
+    - Serial number: this is the version number of the zone and it is incremented by one every time that a change is made to the zone file.
+      - The serial number should never be decreased.
+    - The refresh interval, retry interval and expire interval have to do with primary and secondary name service
+    - Minimum: The historical purpose of this parameter was to hold the default TTL values for records without an explicit TTL value defined.
+      - Nowadays, the minimum parameter represents the TTL value for negative caching.
+    - To query an SOA record, we can use either `dig` or `nslookup`:
+      - `nslookup -type=soa hostname-or-IPaddress`
+        - `nslookup -type=soa example.com`
+
+        ```soa record
+        Non-authoritative answer:
+        example.com
+            origin = ns.icann.org
+            mail addr = noc.dns.icann.org
+            serial = 2024013028
+            refresh = 7200
+            retry = 3600
+            expire = 1209600
+            minimum = 3600
+        ```
+
+      - `dig -t soa example.com` or `dig -t soa example.com +short`
+        - `-t`: type
+      - `dig -t soa example.com +short | tr " " '\n'`
+
+      ``` dig
+      ns.icann.org.
+      noc.dns.icann.org.
+      2024013028
+      7200
+      3600
+      1209600
+      3600
+      ```
+
+  - __NS Record:__
+    - Name Server Record (NS).
+    - The NS records point to the authoritative name servers for a zone and it is these name servers that hold the actual DNS information for a domain so that that domain can be accessible to internet users
+    - If a domain eg. `example.com` does not have any records configured in its zone, there wouldn't be any references to that domain's name servers, which means that the .com TLD server contacted would not be able to return a list of name servers for `example.com`, which in turn means that nobody would be able to browse that domain.
+    - In other words, it is the NS records that ensure the availability of a domain
+    - Every zone must have at least 2 NS records, of which each one points to a different name server for redundancy.
+      - That way, if one name server goes down or becomes unavailable, DNS queries can go to a different name server.
+    - Name servers also reside in topologically separate networks for further resiliency
+    - When registering a domain, many DNS as a service providers by default, provision a set of 4 name servers and they would listed as:
+
+    ```name servers
+    ns1.example.com
+    ns2.example.com
+    ns3.example.com
+    ns4.example.com
+    ```
+
+    - format:
+      - `<domain name> <TTL> <class> NS <nameserver's hostname>`
+      - domain name. e.g. example.com
+      - a TTL value
+      - a resource record class (IN, CH, HS)
+    - Querying ns record:
+      - `nslookup -type=ns <hostname or IP address>`
+        - `nslookup -type=ns example.com`
+
+        ```nslookup ns
+        Non-authoritative answer:
+        example.com     nameserver = b.iana-servers.net.
+        example.com     nameserver = a.iana-servers.net.
+
+        Authoritative answers can be found from:
+        a.iana-servers.net      internet address = 199.43.135.53
+        b.iana-servers.net      internet address = 199.43.133.53
+        a.iana-servers.net      has AAAA address 2001:500:8f::53
+        b.iana-servers.net      has AAAA address 2001:500:8d::53
+        ```
+
+      - `dig -t ns example.com`
+
+  - __A & AAAA records:__
+    - The resource record that stores the association between a domain name and an IPv4 address is the address or A record
+      - The A record contains a mapping between a domain name and an IPv4 address
+      - The AAAA or quad-A record contains a mapping between a domain name and an IPv6 address
+        - The reasom why it is represented by 4 A's is to signify that the value stored in it is four times as big as the one stored in the A record, considering that an IPv4 address has 32 bits and an IPv6 address has 128 bits
+      - It is possible for an A record and AAAA record to point to the same domain in cases where dual stack is required
+    - The A record is the primary record in DNS and it is queried in forward lookup requests
+    - Format:
+      - `<domain name> <TTL> <class> A <IPv4 address>`
+        - ns1.example.com. IN A 192.168.1.35
+      - `<domain name> <TTL> <class> AAAA <IPv6 address>`
+        - ns1.example.com. IN AAAA 2001:354:8::22
+    - Querying an A/AAAA records:
+      - `nslookup -type=a <hostname or IP address>`
+        - `nslookup -type=a example.com`
+
+        ```a record
+        Non-authoritative answer:
+        Name:   example.com
+        Address: 93.184.216.34
+        ```
+
+      - `dig -t -a example.com` or `dig -t a example.com +short +answer`
+
+        ```a record
+        ;; global options: +cmd
+        ;; Got answer:
+        ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 1888
+        ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+        ;; OPT PSEUDOSECTION:
+        ; EDNS: version: 0, flags:; udp: 4096
+        ;; QUESTION SECTION:
+        ;example.com.                   IN      A
+
+        ;; ANSWER SECTION:
+        example.com.            51339   IN      A       93.184.216.34
+
+        ;; Query time: 17 msec
+        ;; SERVER: 2600:1700:1bd0:3e20::1#53(2600:1700:1bd0:3e20::1)
+        ;; WHEN: Tue Mar 19 14:54:35 CDT 2024
+        ;; MSG SIZE  rcvd: 56
+        ```
+
+      - `nslookup -type=aaaa <hostname or IP address>`
+        - `nslookup -type=aaaa example.com`
+
+        ```aaaa record
+        Non-authoritative answer:
+        example.com     has AAAA address 2606:2800:220:1:248:1893:25c8:1946
+        ```
+
+      - `dig -t -aaaa example.com` or `dig -t aaaa example.com +short +answer`
+
+      ```aaaa record
+      ; <<>> DiG 9.10.6 <<>> -t aaaa example.com
+      ;; global options: +cmd
+      ;; Got answer:
+      ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 26708
+      ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+      ;; OPT PSEUDOSECTION:
+      ; EDNS: version: 0, flags:; udp: 4096
+      ;; QUESTION SECTION:
+      ;example.com.                   IN      AAAA
+
+      ;; ANSWER SECTION:
+      example.com.            39519   IN      AAAA    2606:2800:220:1:248:1893:25c8:1946
+
+      ;; Query time: 17 msec
+      ;; SERVER: 2600:1700:1bd0:3e20::1#53(2600:1700:1bd0:3e20::1)
+      ;; WHEN: Tue Mar 19 14:53:47 CDT 2024
+      ;; MSG SIZE  rcvd: 68
+      ```
+
+  - __PTR record:__
+    - Pointer Record (PTR)
+    - The PTR record is the opposite of A or AAAA records. The PTR record is queried in reverse name resolution
+    - The name space for IPv4 addresses is the .in-addr.arpa.domain and the name space for IPv6 addresses is the .ip6.arpa domain.
+    - Format:
+      - `<reverse domain name> <class> PTR <domain name>`
+      - Assuming the IPv4 address is `207.17.120.8`, the PTR record would be `8.120.17.207.IN-ADDR.ARPA`
+
+      - IPv6
+        - `a.9.8.7.6.5.e.f.f.f.4.3.2.1.0.0.0.0.0.0.0.0.f.0.b.d.0.1.0.0.2.IP6.ARPA` assuming the IPv6 address is `2001:0db8:0f00:0000:0012:34ff:fe56:789a`
+    - Pointer records are placed in the reverse lookup zone
+    - Querying PTR:
+      - `nslookup -type=ptr 10.1.1.80`
+        - `nslookup -type=ptr 2600::`
+
+      - `nslookup 10.1.1.80`
+        - `nslookup 2600::`
+
+      - `dig -x 10.1.1.80` or `dig -x 10.1.1.80 +short +answer`
+        - `dig -x 2600:: +short +answer`
+
+  - __CNAME Record:__
+    - CNAME stands for Canonical Name, which is a real name of an object referenced by an alias.
+    - In other words, this record maps one domain name to another
+    - Format:
+      - `<alias> <class> CNAME <TTL> <canonical name>`
+      - alias e.g. `www.example.com`
+      - canonical name: `example.com` (the real name that the alias is pointing to)
+    - Querying a CNAME:
+      - `nslookup -type=cname ns1.mydomain.com`
+      - `dig -t CNAME ns1.mydomain.com`
+    - Use Cases:
+      - CNAME records can be used to map subdomains to apex domain such as `www.example.com` to `example.com.`.
+        - This way, if the IP address if the host changes, only the DNS A record of the apex domain needs to be updated and all the CNAME recods will follow along with whatever changes are made to the parent domain so CNAME records make it easy to run multiple services from one IP address.
+      - Redirect multiple TLDs to the same second-level domain.
+        - e.g `mydomain.com.au` and `mydomain.co.nz`can be directed to `mydomain.com`
+      - Used to validate ownership or control of a domain
+    - Restrictions:
+      - A CNAME record must always point to another domain name and never directly to an IP address
+      - A CNAME record cannot point to an NS or MX record
+      - A CNAME record cannot coexist with another record for the same name.
+        - For example, it is not possible to have both a CNAME and a TXT record for `www.example.com.`
+    - Best Practice:
+      - A CNAME can point to another CNAME, a mechanism known as *CNAME chaining*. It is considered best practice NOT to use CNAME chaining.
+        - This is because it requires multiple DNS lookups before the intended domain can be loaded, which slows down the name resolution process and in turn impacts user experience
+        - It is better therefore to point CNAME to a canonical name.
+
+  - __TXT Record:__
+    - Text Record (TXT)
+    - It associates textual information with an FQDN
+    - Format:
+      - `<domain name> <class> TXT <TTL> <textual data>`
+    - Although the official format for storing data in a TXT record theoretically involves using attribute value pairs (such as `"attribute=value"`) delimited by an equals sign and enclosed by quotation marks, domain admins can use their own formats when configuring TXT records; which is a testament to the flexibility of the TXT record
+      - The data can be placed inside its value could be any text the the admin wants to associate with their domain.
+    - TXT records were originally created to associate a domain with textual information(human-readable notes), but they are currently used got domain ownership and email security purposes.
+      - The value of a TXT record can have human-readable notes as well as machine-readable data
+    - The same domain can be associated to multiple TXT records
+    - Querying TXT records:
+      - `nslookup -type=txt example.com`
+      - `dig -t txt example.com`
+    - Use cases:
+      - Associating domains with textual data
+      - Proving domain ownership
+      - Strengthening email security
+
+  - __MX record:__
+    - Mail Exchange Record (MX)
+    - An MX record maps a domain name to an email server
+    - Email has always been heavily reliant on DNS, perhaps more so than any other TCP/IP based application, and MX records provide the necessary infrastructure for it to work
+    - Format:
+      - `<domain name> <class> MX <TTL> <preference-value> <email-server>`
+      - Why does email-server not feature an `@` symbol?
+        - When email clients send an email to any recipient, they use the `@` sign as a means to separate the mail server from the domain it is meant to receive the emails for, e.g. `support@example.com`.
+        - As far as name servers are concerned, the names of mail servers inside the mx records are configured with `.` not `@`
+      - `preference-value`: it alows a DNS administrator to specify multiple email service so that if the first server is down, the emails will be forwarded to the backup email server, thus achieving redundancy
+        - The lower the preference value of the mail server, the higher the priority of that server will be
+        - It is also possible to specify multiple backup email servers:
+
+          ```mx record
+          <domain name> <class> MX <TTL> 10 primaryemail.www.example.com
+                                         20 seconadryemail.www.example.com
+                                         30 backupemail.www.example.com
+                                         40 backupemail2.www.example.com
+          ```
+
+    - How can the authoritative name server know of the email server's location, Should there not be an additional record that in turn maps the hostname of that server to an IP address?
+      - Yes. An A record needs to be defined alongside the MX record so that the name server can forward email to the correct endpoint.
+      - Additionally, A records would typically be created for as many email servers the domain is associated with
+
+      ```mapping A record
+      <domain name> <TTL> <class> A <IPv4 address>
+      ```
+
+    - An MX record must always point to another domain and never to a CNAME record
+    - Querying an MX record:
+      - `nslookup -type=mx google.com`
+      - `dig -t MX google.com`
+
+## DNS Configuration
+
+  - __Architecture:__
     -
 
 ## References
