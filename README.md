@@ -667,10 +667,113 @@
       - `nslookup -type=mx google.com`
       - `dig -t MX google.com`
 
-## DNS Configuration
+## DNS Protocol Analysis
 
-  - __Architecture:__
-    -
+- __DNS Messages:__
+  - The core function of name resolution is carried out by two different messages:
+    - Query: sent by the client
+    - Response: sent by the server
+  - Each exchange of these messages is referred to as *transaction* and it is assigned a transaction ID by DNS
+  - If a client sends three different name requests to three different servers, the transaction ID makes it easy to find which query elicited which response
+    - This can be a helpful feature that can be used when troubleshooting DNS issues or when conducting a forensic network analysis
+  - As a layer 7 application, DNS has to rely on a transport protocol at layer 4 to transfer DNS messages from client to server and vice versa
+  - Most network protocol residing at the application layer usually rely on either TCP or UDP. However, DNS uses both TCP and UDP depending on the operation taking place
+    - For name resolution where speed is of the esscence, UDP is used as a transport protocol to carry both requests and responses
+      - Since UDP does not offer a reliable method of delivering messages, it is up to the client to keep track of the requests sent, so that if a response is not received at specific time interval, the corresponding request can be retransmitted
+      - In the interest of preventing excessive DNS traffic on the network, retransmissions are usually sent at an interval ranging from 2-5 seconds
+      - All UDP DNS messages are limited to a payload of 512 bytes
+      - If a response message is larger than that, the message is truncated and a special bit in the header is said to indicate this outcome. In such an event, the client would then be expected to retry the query over TCP instead, which doesn't have the same size limitation as UDP.
+    - TCP is used when data has to be delivered reliably, as in the case in scenarios such as zone transfers or when a DNS response requires more than 512 bytes of space
+      - Transactions taking place over TCP remain a small fraction of overall DNS traffic, regardless of which transport protocol is used
+  - Regardless of the transport protocol used, the standard port that the server listens to by default is port 53, while the port used by the client is always an ephemeral one
+  - Other types of DNS messages outside the area of name resolution are:
+    - Notify: Allows master servers to inform worker servers when the zone has changed, carried over UDP.
+    - Update: Used to add or delete resource records or resource record sets from a specified zone and it can be carried over either UDP or TCP depending on the size of the request.
+
+- __RCODES:__
+  - Response Codes (RCODES)
+  - RCODES indicate whther an error condition exists in the response and each RCODES corresponds to a numeric value.
+  - Every response message contains an RCODES and every RCODES with a value other than 0 suggests an error;
+  - Full list of RCODES: <http://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-6>
+  - The `NOERROR` RCODE is the only response code that indicates success
+  - `dig amazon.com`
+
+  ```RCODES
+    ; <<>> DiG 9.10.6 <<>> amazon.com
+    ;; global options: +cmd
+    ;; Got answer:
+    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39106
+    ;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1
+
+    ;; OPT PSEUDOSECTION:
+    ; EDNS: version: 0, flags:; udp: 4096
+    ;; QUESTION SECTION:
+    ;amazon.com.                    IN      A
+
+    ;; ANSWER SECTION:
+    amazon.com.             739     IN      A       52.94.236.248
+    amazon.com.             739     IN      A       54.239.28.85
+    amazon.com.             739     IN      A       205.251.242.103
+
+    ;; Query time: 14 msec
+    ;; SERVER: 2600:1700:1bd0:3e20::1#53(2600:1700:1bd0:3e20::1)
+    ;; WHEN: Wed Mar 20 15:21:26 CDT 2024
+    ;; MSG SIZE  rcvd: 87
+  ```
+
+  - Common RCODES:
+    - 0, NoError, No Error: Success
+    - 1, FormErr, Format, Error: the name server is unable to interpret the query
+    - 2, ServFail, Server Failure: the name server was unable to process this query due to a problem with the name server
+    - 3, NXDomain, Non-Existent Domain: The domain name reference in the query does not exist
+    - 4, NotImp, Not Implemented: The name server does not support the requested kind of query
+    - 5, Refused, Query Refused: The query was refused due to the fact the the name server refused to perform the specified operation for policy reasons
+
+- __The DNS Header:__
+  - The DNS OpCodes are assigned as follows:
+  - |OpCode   | Name                                |
+    |---------|-------------------------------------|
+    | 0       | Query                               |
+    | 1       | IQuery (Inverse Query)- Obsolete    |
+    | 2       | Status (Obsolote)                   |
+    | 3       | Unassigned                          |
+    | 4       | Notify                              |
+    | 5       | Update                              |
+    | 6-15    | Unassigned                          |
+
+  - The DNS header consists of a series of fields:
+    - Transaction ID: Associates DNS queries with their corresponding responses
+    - QR : indicates whether the header us for a query, represented by a 0, or for a response, represented by 1
+    - OP (Operation) Codes: specify the query type. Each DNS OpCode is assigned a name.
+    - AA: Authoritative Answer and it is valid in responses. The AA specifies the responding name server is an authority for the domain name being requested
+    - TC: Truncation. Set when a message is truncated due to its length being greater than the maximum size; 512 bytes
+    - RD: Recursion Desired. It is set in the query upon the client sending a recursive request to the DNS resolver
+    - RA: Recursion Availabe. Denotes whether the name server responding supports recursive queries
+    - Z: reserved for future use and it must be zero in all queries and responses
+    - AD: Authentic Data
+    - CD: Checking Disabled
+      - Both AD and CS are important in the DNSSEC mechanism
+    - RCODE: Indicate whether an error condition exists in the response
+  - QDCOUNT/ZOCOUNT: Unsigned Integer Field count that represents the number of questions
+  - ANCOUNT/PRCOUNT: Answer count field that represents the number of answers and
+  - NSCOUNT/UPCOUNT: represents the number of authority resource records
+  - ARCOUNT: represents the number of additional records
+
+- __Capturing and Analysing DNS traffic:__
+  - There are two main methods of capturing network traffic:
+    - Passive traffic capture: You can do this by runing `tcpdump` on the network interfaces to cache only server active traffic capture
+    - Active traffic capture: This is needed when there is no direct access to the computer systems involved or the network path you wish to capture, and so to intercept it, you would need to implement a more active technique such as placing a proxy or a network tap in the middle of the tap.
+  - Capture point: the precise location where to setup the traffic listener
+  - Always try to determine the best capture point wisely
+
+- __Constructing DNS Packets:__
+  - Scapy is a powerful packet manipulation program which is capable of forging packets from scratch, ..etc.
+  - Each Packet in Scapy needs to Follow the structure of teh TCP/IP model starting with the network layer, followed by the Transport layer, etc.
+  - Installing Scapy:
+    - `sudo apt-get update -y`
+    - `sudo apt-get install python3-pip`
+    - `sudo python3 -m pip install --pre scapy[complete]`
+    - `sudo scapy`
 
 ## References
 
