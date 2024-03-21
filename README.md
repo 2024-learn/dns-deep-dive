@@ -27,7 +27,7 @@
     - A portion of a domain name such as the host portion of the `www.example.com` domain is known as a *Partially Qualified Domain Name(PQDN)*
       - A partially qualified domain name starts with the hostname, but it may not reach up to the root
     - The other dots outside of the dot representing the root, serve as delimiters, separating the labels of a domain
-    - Other cosiderations on a domain name syntax:
+    - Other considerations on a domain name syntax:
       - Each label can be up to 63 characters long
       - The characters are loud and labels can be A through Z, uppercase and lowercase; digits from zero to nine and hyphen. This rule is known as LDH rule letters.
       - Digits hyphen labels may not start or end with a hyphen
@@ -38,22 +38,22 @@
     - Authority is distributed
     - Name uniqueness is guaranteed
     - Instead of having a singular database if domain names (flattened architecture), we have a globally distributed collection of databases forming a tree-like structure(hierarchical architecture) that is indexed by domain names and where each domain name is essentially just a path in that large tree
-    - Administration is decentralized completely and delegeation is handed over to organizations
-    - As such many authorities share in the registration nas administrative process and take ove the responsibility of managing their own data.
+    - Administration is decentralized completely and delegation is handed over to organizations
+    - As such many authorities share in the registration nas administrative process and take over the responsibility of managing their own data.
     - By the same token. every organization administering a domain can further divide it into subdomains
-    - And each subdomain can in turn be delegated to other organizations which are then entitled to change the data freely and even subdivide thise sub domains into more sub domains and delegate those
+    - And each subdomain can in turn be delegated to other organizations which are then entitled to change the data freely and even subdivide these sub domains into more sub domains and delegate those
     - *Benefits:*
       - Decentralized administration due to its ability to delegate authority to organizations
-      - Easier management flexinility as it allows the namespace to scape and the internet to grow
+      - Easier management flexibility as it allows the namespace to scape and the internet to grow
       - The guarantee that ever domain name is unique
     - The DNS tree consists of root name servers at the top, followed by the TLD, followed by the authoritative name servers.
   - __Root Servers__
     - The root server is the first component of the DNS tree that receives a DNS Query
     - The root server's main job is to reply with a referral to the TLD server to be contacted
-    - The first recipient of our request (DNS query) is one of the root servers which sists at the top of the hierarchical DNS tree
-    - Upon receiving a query to resolve a specific name, the root server's job is to pass back a referral for a TLD name server based on a TLD extesion of the domain name being requested.
+    - The first recipient of our request (DNS query) is one of the root servers which sits at the top of the hierarchical DNS tree
+    - Upon receiving a query to resolve a specific name, the root server's job is to pass back a referral for a TLD name server based on a TLD extension of the domain name being requested.
       - e.g, if you type <www.google.com>, the DNS request would be received by a root server, which would pass back a referral with a `com` name server so that the query is sent there next for further processing
-    - There are 13 original root name servers, each of which is labelled with a letter from 'A' to 'M'
+    - There are 13 original root name servers, each of which is labeled with a letter from 'A' to 'M'
       - Reference: <https://root-servers.org>
     - There are multiple copies of each root server at over 130 locations all over the world, hosted in multiple secure sites with high bandwidth access to handle the traffic load with 938 root servers being in operation worldwide (as of Feb, 20, 2019)
   - __TLD Servers__
@@ -63,7 +63,7 @@
     - gTLDs are supposed to reflect the type of industry or space that the organization in ownership of that domain falls into
       - original gTLDs: .arpa, .com, .edu, .gov, .mil, .net, .org
       - additional gTLDs: .aero, .int, .pro .info ...
-    - ccTLDs have been created to allow cointries to manage their won namespace and make it easier for their citizens to find the resources they need in the languages they understand
+    - ccTLDs have been created to allow countries to manage their own namespace and make it easier for their citizens to find the resources they need in the languages they understand
       - e.g .ke, .us, .jp, .za --
     - Countries can also use organizational subdomains in their ccTLDs
       - e.g .co.ke, .co.uk, etc.
@@ -74,8 +74,8 @@
     - The authoritative name server provided the final answer in a DNS request
     - Linguistically, a domain refers to a sphere of influence governed by an entity that exercises over that domain and is tasked with certain responsibilities
     - In the context of DNS, domain is a particular slice of the protocol's namespace where there is somebody with the authority to manage that segment and with the responsibility to provide answers to DNS requests made for that very segment
-    - The entire name hierarchy is divided into such segments of authority. DNS uses a globally distributed system of databases and that system works in conjuction with an equally distributed system os authorities
-    - This herarchical authority structure complements the heirachical name structure in DNS and it is not necessary for a different authority to exist at each level of the hierarchy. As in many cases, a single authority may manage a section of the namespace the spans more than one level of the structure. e.g. ICANN manages the root servers and the .int TLD.
+    - The entire name hierarchy is divided into such segments of authority. DNS uses a globally distributed system of databases and that system works in conjunction with an equally distributed system of authorities
+    - This hierarchical authority structure complements the hierarchical name structure in DNS and it is not necessary for a different authority to exist at each level of the hierarchy. As in many cases, a single authority may manage a section of the namespace that spans more than one level of the structure. e.g. ICANN manages the root servers and the .int TLD.
     - In short, the authoritative name server is the one holding the DNS name database specific to the requested domain and the one that will complete the name resolution process by providing the IP address mapped to the domain name we have typed in our browser.
 
 ### 2. __Name Resolution:__
@@ -86,7 +86,7 @@
   - Local name resolution is controlled by the host table, a simple text file consisting of static mappings between IP addresses and host names.
     - The host table is actually a predecessor of DNS, and it was one of the earliest named systems ever created in computing
   - The host table is represented by the host file - in Linux:`/etc/hosts` ; in Windows: `C:\Windows\System32\drivers\etc\hosts`
-  - Admin priviledges are required to modify the hosts file
+  - Admin privileges are required to modify the hosts file
   - Local name resolution is also known as host table name resolution
 
   ```cat /etc/hosts
@@ -129,11 +129,11 @@
       - It can be used for bootstrapping the most important hosts on the local network to ensure that names are resolved when DNS is not running, e.g. in the event of a system boots up.
       - It can be used as a fallback last resort method for resolving critical domains in case DNS stops working altogether
     - __Best Practices__
-      - Do not create unncessary entries in the hosts file
+      - Do not create unnecessary entries in the hosts file
       - Remember you can associate a single IP address with multiple aliases on a single line
       - Keep the content organized by dividing the mappings into categories based on their purpose and by adding comments where appropriate
       - Use version control
-      - Enforce access control so that unauthorized users cannot modify the hosts file. by default, all users with admin priviledges can perform changes
+      - Enforce access control so that unauthorized users cannot modify the hosts file. by default, all users with admin privileges can perform changes
       - Always copy the hosts file before making any changes.
       - Comment out undesired mappings to disable them instead of deleting them outright, it saves time if you wish to reapply them in the future
       - Implement a mechanism to ensure name uniqueness which can be achieved with a custom script
@@ -149,7 +149,7 @@
       - The resolver has the knowledge of root servers due to its *root hints file* which is where the root servers are stored.
       - <https://www.internic.net/domain/named.root>
       - So long as the resolver has the information included in <https://www.internic.net/domain/named.root> this file, it will be able to contact the root servers whole trying to resolve a domain name for its client
-    - In a small office/ home office network, the DNS resolver is typically the router or an IP address provided by the Internet Service Provicer (ISP)
+    - In a small office/ home office network, the DNS resolver is typically the router or an IP address provided by the Internet Service Provider (ISP)
     - `ipconfig /all | findstr "DNS"`(Windows): to get the IP address of your DNS resolver; in Linux you can `cat /etc/resolv.conf`
     - Companies on the other hand, have their own DNS resolver.
     - It is also possible to use an open DNS resolver for your environment as long as a connection to the internet is established
@@ -158,15 +158,15 @@
       - CloudFlare: 1.1.1.1
       - Quad9: 9.9.9.9
     - There are some differences between DNS resolvers:
-      - Some resolvers support EDNS0 (An extension ti the DNS protocol) whereas some others do not.
-      - Many resolvers support ngative caching but not all
+      - Some resolvers support EDNS0 (An extension to the DNS protocol) whereas some others do not.
+      - Many resolvers support negative caching but not all
       - Not all resolvers use the same method in choosing which name servers to contact.
         - The majority of DNS resolvers use a technique called smooth round trip time (SRTT), which is based on the lowest latency
         - Other resolvers select name servers at random
-    - Analogy: A customer service rep who keeps providing us with different phone numbers until you finally get to the right depeartment
+    - Analogy: A customer service rep who keeps providing us with different phone numbers until you finally get to the right department
   - __Iterative Name Resolution:__
     - There are two main resolution types of DNS: Iterative and Recursive.
-    - The server's referal includes every single name server contained in its local data. It is up to the client to choose which name server to contact next.
+    - The server's referral includes every single name server contained in its local data. It is up to the client to choose which name server to contact next.
       - Let's say we have a client that sends a DNS query to a server requesting information about a specific domain name.
       - The queried server looks for the requested information on its own local data and if it doesn't have the answer there, it returns a referral containing the names and addresses of the name servers closest to the domain name in the request to allow the resolution process to continue.
     - In iterative resolution, it is the CLIENT's responsibility to keep querying servers until the required information is obtained.
@@ -177,7 +177,7 @@
     -
     - ![iterative name resolution](https://lh3.googleusercontent.com/-jjjSSsJ4NI6LpUyzl0qlL46opK_MaUEzBD4SXU1YQtZHESJCGMe2yvE9ZE72AOqj4NFlQDZOirSX7yPz7qLE94st3EjzETHTcVGLAZL2t1bKYVkVRZwU6B1idPOh11pPClma5XZ)
   - __Recursive Name Resolution:__
-    - Upon receiving a recursive query, the server checks if it possesses the information requested, in which case, it passes an aswer back to the client.
+    - Upon receiving a recursive query, the server checks if it possesses the information requested, in which case, it passes an answer back to the client.
     - If it doesn't, instead of simply referring to the client with a referral to a point like in iterative resolution, the  server instead assumes the role of the client and it begins looking for the requested information on behalf of the original client.
     - In this type of resolution, the original client gets to send only a single query, which eventually returns the information requested
       - In recursive resolution, it is the SERVER's responsibility to obtain the DNS information requested by the original client
@@ -189,19 +189,19 @@
       ![Recursive Name Resolution](https://lh4.googleusercontent.com/OGbORicB2r8DRnJNSjkw5hgT2rB6po98XUzrEAiazTbc8iub1SMr9o6gMVHKMCTJvkSnkW02MSpW4_P6G3WduM18M__GadEhrx26TRCQufRf0n3CfRGIWncj1RN48-sOMjnxTxUs)
   - __Caching:__
     - The purpose of caching computing is to temporarily store previously acquired data so that future requests for that data can be served faster.
-    - in the context of DNS, whenever a name is resolved, the resulting DNS information is cached, so it can be used for subsquent requests that take place. This way, so long as the interesting DNS information remains cached for future requests against the same, data will stop at the system that has cached the data in question. This saves the network bandwidth and any resulting latency in DNS lookups.
-    - As soon as the resolver has the authrotative answer, it caches it before forwarding it to the client, which in turn places the resolved data in its own cache as well.
-    - As a result in the case of e.g. `www.example.com`, for any future requests against that domain, the client will first consult its cache, which includes any recently resolved DNS information, as well as the mappings in the host table. If the infomation is not there, then the client will then contact the resolver, which will then check its own cache and return the answer to the client, which then caches the information for future reference. If the information, is not available in either of these caches, then the client will then proceed to sending the usual series of iterative requests until it finds the authoritative answer for `www.example.com`
+    - in the context of DNS, whenever a name is resolved, the resulting DNS information is cached, so it can be used for subsequent requests that take place. This way, so long as the interesting DNS information remains cached for future requests against the same, data will stop at the system that has cached the data in question. This saves the network bandwidth and any resulting latency in DNS lookups.
+    - As soon as the resolver has the authoritative answer, it caches it before forwarding it to the client, which in turn places the resolved data in its own cache as well.
+    - As a result in the case of e.g. `www.example.com`, for any future requests against that domain, the client will first consult its cache, which includes any recently resolved DNS information, as well as the mappings in the host table. If the information is not there, then the client will then contact the resolver, which will then check its own cache and return the answer to the client, which then caches the information for future reference. If the information, is not available in either of these caches, then the client will then proceed to sending the usual series of iterative requests until it finds the authoritative answer for `www.example.com`
     - Unsuccessful requests resulting in errors are also cached in what is known as 'negative caching'.
-    - Caching is so important in DNS that dedicated DNS servers (cache-only DNS srevers) exist with a sole purpose of providing the caching function without having any authority over any domains.
+    - Caching is so important in DNS that dedicated DNS servers (cache-only DNS servers) exist with a sole purpose of providing the caching function without having any authority over any domains.
       - They are often present in many network deployments
     - Why is the cache not permanent?
-      - Whether intentional or accidental, changes take place in the configuation of DNS name servers, and those changes can result in incorrect responses due to cached information that is no longer valid. e.g if the IP address of `www.example.com` were to change, the cached domain name would not be able to be resolved, resulting in an error
+      - Whether intentional or accidental, changes take place in the configuration of DNS name servers, and those changes can result in incorrect responses due to cached information that is no longer valid. e.g if the IP address of `www.example.com` were to change, the cached domain name would not be able to be resolved, resulting in an error
         - The value of the __Time To Live (TTL)__ parameter determines the amount of time DNS information remains cached
     - `ipconfig /displaydns` (Windows): Displays the DNS resolver cache content
     - `ipconfig /flushdns` (Windows): Clears the cache
     - DNS caching in Linux is done by dedicated services, such as the Name Service Caching Daemon (ncsd).
-      - first terminal: `sudo ncsd -g`: this command will display the statistics of the DNS cachng daemon
+      - first terminal: `sudo ncsd -g`: this command will display the statistics of the DNS caching daemon
         - `sudo strings /var/cache/nscd/hosts`: displays the DNS information that has been cached
         - `sudo watch -n1 'nscd -g | grep A21 "hosts cache:" | grep "cache hit rate"'`
           - on a second terminal: `export PS1='$`
@@ -220,14 +220,14 @@
       - Cache hit refers to whenever the client finds the information it is looking for inside the cache.
       - Cache miss is the opposite
   - __DNS Name Resolution Workflow:__
-    - The FQDN of `www.example.com` is actually `www.example.com.` with the trailing period representing the root. The trailing period is implied so you do not have to type it in thte address bar
+    - The FQDN of `www.example.com` is actually `www.example.com.` with the trailing period representing the root. The trailing period is implied so you do not have to type it in the address bar
     - Not all DNS resolvers use the same method in choosing which name server to contact.
-    - The process begins with an end user typing a domain name into their broswer e.g. `www.example.com`
+    - The process begins with an end user typing a domain name into their browser e.g. `www.example.com`
     - Assuming that the browser does not have that information in its cache, it will ask the client's operating system
     - The OS checks its cache and host table for any data on the site.
-    - Assuming that is doesn't find any, a recursive query is then sent to the DNS resolver, which first checks its own DNS cache and if there is no information there either, the DNS resolver consults its route hints file and contacts a root name server.
+    - Assuming that it doesn't find any, a recursive query is then sent to the DNS resolver, which first checks its own DNS cache and if there is no information there either, the DNS resolver consults its route hints file and contacts a root name server.
     - The queried root name server sends back a referral containing a list of name servers for the `.com` zone along with their respective IP addresses
-    - The DNS resolver then selcts one of those nae servers and sends it an iterative query for the site. the queried `.com` name server responds with a referral containinf a list of name servers which are authoritative for the `example.com` domain
+    - The DNS resolver then selects one of those name servers and sends it an iterative query for the site. the queried `.com` name server responds with a referral containing a list of name servers which are authoritative for the `example.com` domain
     - The DNS resolver selects one of those name servers and sends it an iterative query for `www.example.com`.
     - The authoritative name server then replies with an authoritative answer containing the IP address of the domain in question
     - The DNS resolver then caches the information and forwards it to the client that had transmitted the recursive query.
@@ -237,17 +237,17 @@
     - A DNS request that is looking for the IP address of a domain name is known as a forward request or forward resolution.
       - Forward resolution: Resolving domain names into their corresponding addresses.
     - Reverse Resolution(rDNS): When you have an IP address and need to find the domain name it is attached to.
-      - To accomodate reverse resolution, DNS has a special domain called `in-add.arpa`
+      - To accommodate reverse resolution, DNS has a special domain called `in-add.arpa`
         - The `in-addr` part stands for internet address
         - Within that domain is a numerical hierarchy that covers the entire IP address space, and it contains 4 levels of numerical subdomains structured so that each IP address has its own node, and that node can contain an entry that points to the domain name mapped to that address.
         - At each level of the hierarchy are 256 subdomains (0 - 255)
         - The `in-arpa` reverse name resolution covers the entire IPv4 address space and coexists with the domain name hierarchy under the same root
-        - The reason why we reverse the octets of the IP address contained in the reverse name is because, unlike the name resolution that proceeds form the least specific to the most specific element going from right to left, IP addresses have the least specific octets on the left and the most specific one on the right. In the interest of mainitaining consistency with the DNS namespace, the octets are thus flipped
+        - The reason why we reverse the octets of the IP address contained in the reverse name is because, unlike the name resolution that proceeds form the least specific to the most specific element going from right to left, IP addresses have the least specific octets on the left and the most specific one on the right. In the interest of maintaining consistency with the DNS namespace, the octets are thus flipped
       - `ping www.example.com`: forward resolution
       - Reverse resolution using `ping`:
         - `ping -a 8.8.8.8`
       - `dig -x 8.8.8.8`: reverse name lookup
-        - `dig -x 8.8.8.8 +noall +answer`: maked the `dig` output more precise.
+        - `dig -x 8.8.8.8 +noall +answer`: makes the `dig` output more precise.
         - Unlike `ping`, `dig`displays both parts of the mapping: the reverse name and the domain name
       - `nslookup 8.8.4.4`
       - other reverse name lookup tools:
@@ -262,7 +262,7 @@
 
 ### 3. __Name Registration:__
 
-- Name registration involves the regisrtation of domains.
+- Name registration involves the registration of domains.
 - Name registration is how a domain is registered, how its uniqueness is guaranteed, and what are the registration authorities responsible for the name assignment process
 - __Domain Name Registration Hierarchy:__
 ![Domain Name Registration Hierarchy](https://149463845.v2.pressablecdn.com/wp-content/uploads/2017/07/Domain_Industry_Hierarchy-1-768x513.png)
@@ -293,16 +293,16 @@
     - The registrant chooses a domain name and submits a request to register it with a register or an ICANN accredited registrar.
     - Provided that the domain name is available, the registrar registers the name and then creates a WHOIS record
       - The WHOIS record contains the registrant's name and contact information, the name and contact information of the registrar, registration date, the name servers, the most recent update and the expiration date
-      - The WHOIS record may also provide the adinistrative and techincal information of the registrant
-    - The registrar will then send you domain name request along with the contact and technical information of the domain name to the appropriate registry.
-    - The registry then files allinformation provided and it add the domain zone file to the master service, which will tell other servers on the internet where your website is located.
+      - The WHOIS record may also provide the adminstrative and technical information of the registrant
+    - The registrar will then send you a domain name request along with the contact and technical information of the domain name to the appropriate registry.
+    - The registry then files all information provided and it add the domain zone file to the master service, which will tell other servers on the internet where your website is located.
 - __Choosing a TLD:__
   - As of June 2020, the entire list consists  of more than 1500 TLDs to choose from, that span at least six distinctive categories and the list keeps expanding
   - The choice of TLD needs to be dictated by the specific use case:
-    - Is there a support for DNSSEC(DNS Security mechanism that provides protection against certain attacks such as DNS Cache Poisioning)?
+    - Is there support for DNSSEC(DNS Security mechanism that provides protection against certain attacks such as DNS Cache Poisoning)?
       - TLDs such as .aero, .pro, .travel are a few of the TLDs that do not support the security feature.
     - Is there support for internationalized domain names (IDNs)?
-      - i.e domain ames that include non-ascii characters like with Arabic and Korean languages.
+      - i.e domain names that include non-ascii characters like with Arabic and Korean languages.
     - Is there support for domain privacy to protect you from people finding your personal information in the registration records?
       - Many ccTLDs such as .us, .eu do not have privacy
     - What is your target audience?
@@ -310,7 +310,7 @@
       - If the org's audience is an even more specific location e.g. Wales, a geoTLD such as .wales would make more sense
     - What is your particular field?
       - If the website is going to advertise your business, you might want to use an industry specific TLD
-    - Does the TLD you are intersted in have any local presence requirements?
+    - Does the TLD you are interested in have any local presence requirements?
       - Some TLDs like Canada's .ca, China's .cn and US's .us do have local presence requirements, which means that only citizens and entities native to those countries are permitted to register domains within those TLDs
 - __Choosing a Second-Level Domain:__
   - Your second-level domain can have any form you like as long as the name you pick follows the rules of the domain name format.
@@ -319,14 +319,14 @@
       - Use Keywords that reflect your industry
       - Use localized keywords, if applicable. Like the name of the area or city you operate in
       - Try to keep it short; with less than ten characters
-      - Ensure it is easy to spell, pronouce, and remember
+      - Ensure it is easy to spell, pronounce, and remember
     - __Do Nots__
       - Try not to use hyphens, numbers or acronyms
   - Check if the chosen domain name is available.
   - Check if it is within your budget
   - Once you have registered your domain, then you own that name space. This means that you will not need to register any subdomains you might create later on.
   - A common strategy is to buy the same domain with multiple TLDs and point them all to a single one
-  - Buying misspellings of your domain name is the main way of combatting *typosquatting* or *URL hijacking*
+  - Buying mispellings of your domain name is the main way of combating *typosquatting* or *URL hijacking*
   - To check common domain names mispellings: <https://dnstwist.it/>
 - __Choosing a Registrar:__
   - Factors to take into consideration when choosing a registrar:
@@ -340,13 +340,13 @@
       - Word press hosting
       - Website builders
       - Email hosting
-      - Brokerge services
+      - Brokerage services
       - Privacy protection
       - SSL protection
       - Customer service support
     - Supported TLDs
     - Policies, such as the registrar's policies on domain transfers, domain expiration...
-  - It is recommended that you register your domain name on the registrar buthost it on another provider, simply because it is usually easier to switch hosting companies if required later on, provided that the domain name is hosted on a platform different to the one it was registered on.
+  - It is recommended that you register your domain name on the registrar but host it on another provider, simply because it is usually easier to switch hosting companies if required later on, provided that the domain name is hosted on a platform different to the one it was registered on.
   - A registered domain that is not associated with a service such as a website is known as a *parked domain*
 - __EPP Status Codes:__
   - Reference: <https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en>
@@ -396,7 +396,7 @@
     - Name
     - Type: Each RR has a different value.
       - .e.g. A record has a type value of 1, while NS record has a type value of 2
-    - Class (IN/CH/HS): 99% cases should be IN for internet. There is also the Chaos class (CH) and Hesiod Class (HS)
+    - Class (IN/CH/HS): 99% cases should be `IN` for internet. There is also the Chaos class (CH) and Hesiod Class (HS)
     - TTL (Time to Live): defines the length of time that the resource record remains cached for
     - Resource Data length (RDLength): Indicates the size of the resource data field in bytes
     - Resource Data (RData): The actual data that the resource record stores
@@ -498,7 +498,7 @@
     - The resource record that stores the association between a domain name and an IPv4 address is the address or A record
       - The A record contains a mapping between a domain name and an IPv4 address
       - The AAAA or quad-A record contains a mapping between a domain name and an IPv6 address
-        - The reasom why it is represented by 4 A's is to signify that the value stored in it is four times as big as the one stored in the A record, considering that an IPv4 address has 32 bits and an IPv6 address has 128 bits
+        - The reason why it is represented by 4 A's is to signify that the value stored in it is four times as big as the one stored in the A record, considering that an IPv4 address has 32 bits and an IPv6 address has 128 bits
       - It is possible for an A record and AAAA record to point to the same domain in cases where dual stack is required
     - The A record is the primary record in DNS and it is queried in forward lookup requests
     - Format:
@@ -622,8 +622,8 @@
     - Format:
       - `<domain name> <class> TXT <TTL> <textual data>`
     - Although the official format for storing data in a TXT record theoretically involves using attribute value pairs (such as `"attribute=value"`) delimited by an equals sign and enclosed by quotation marks, domain admins can use their own formats when configuring TXT records; which is a testament to the flexibility of the TXT record
-      - The data can be placed inside its value could be any text the the admin wants to associate with their domain.
-    - TXT records were originally created to associate a domain with textual information(human-readable notes), but they are currently used got domain ownership and email security purposes.
+      - The data can be placed inside its value could be any text that the admin wants to associate with their domain.
+    - TXT records were originally created to associate a domain with textual information(human-readable notes), but they are currently used for domain ownership and email security purposes.
       - The value of a TXT record can have human-readable notes as well as machine-readable data
     - The same domain can be associated to multiple TXT records
     - Querying TXT records:
@@ -643,7 +643,7 @@
       - Why does email-server not feature an `@` symbol?
         - When email clients send an email to any recipient, they use the `@` sign as a means to separate the mail server from the domain it is meant to receive the emails for, e.g. `support@example.com`.
         - As far as name servers are concerned, the names of mail servers inside the mx records are configured with `.` not `@`
-      - `preference-value`: it alows a DNS administrator to specify multiple email service so that if the first server is down, the emails will be forwarded to the backup email server, thus achieving redundancy
+      - `preference-value`: it allows a DNS administrator to specify multiple email service so that if the first server is down, the emails will be forwarded to the backup email server, thus achieving redundancy
         - The lower the preference value of the mail server, the higher the priority of that server will be
         - It is also possible to specify multiple backup email servers:
 
@@ -677,8 +677,8 @@
   - If a client sends three different name requests to three different servers, the transaction ID makes it easy to find which query elicited which response
     - This can be a helpful feature that can be used when troubleshooting DNS issues or when conducting a forensic network analysis
   - As a layer 7 application, DNS has to rely on a transport protocol at layer 4 to transfer DNS messages from client to server and vice versa
-  - Most network protocol residing at the application layer usually rely on either TCP or UDP. However, DNS uses both TCP and UDP depending on the operation taking place
-    - For name resolution where speed is of the esscence, UDP is used as a transport protocol to carry both requests and responses
+  - Most network protocols residing at the application layer usually rely on either TCP or UDP. However, DNS uses both TCP and UDP depending on the operation taking place
+    - For name resolution where speed is of the essence, UDP is used as a transport protocol to carry both requests and responses
       - Since UDP does not offer a reliable method of delivering messages, it is up to the client to keep track of the requests sent, so that if a response is not received at specific time interval, the corresponding request can be retransmitted
       - In the interest of preventing excessive DNS traffic on the network, retransmissions are usually sent at an interval ranging from 2-5 seconds
       - All UDP DNS messages are limited to a payload of 512 bytes
@@ -692,7 +692,7 @@
 
 - __RCODES:__
   - Response Codes (RCODES)
-  - RCODES indicate whther an error condition exists in the response and each RCODES corresponds to a numeric value.
+  - RCODES indicate whether an error condition exists in the response and each RCODES corresponds to a numeric value.
   - Every response message contains an RCODES and every RCODES with a value other than 0 suggests an error;
   - Full list of RCODES: <http://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-6>
   - The `NOERROR` RCODE is the only response code that indicates success
@@ -735,7 +735,7 @@
     |---------|-------------------------------------|
     | 0       | Query                               |
     | 1       | IQuery (Inverse Query)- Obsolete    |
-    | 2       | Status (Obsolote)                   |
+    | 2       | Status (Obsolete)                   |
     | 3       | Unassigned                          |
     | 4       | Notify                              |
     | 5       | Update                              |
@@ -748,7 +748,7 @@
     - AA: Authoritative Answer and it is valid in responses. The AA specifies the responding name server is an authority for the domain name being requested
     - TC: Truncation. Set when a message is truncated due to its length being greater than the maximum size; 512 bytes
     - RD: Recursion Desired. It is set in the query upon the client sending a recursive request to the DNS resolver
-    - RA: Recursion Availabe. Denotes whether the name server responding supports recursive queries
+    - RA: Recursion Available. Denotes whether the name server responding supports recursive queries
     - Z: reserved for future use and it must be zero in all queries and responses
     - AD: Authentic Data
     - CD: Checking Disabled
@@ -761,19 +761,153 @@
 
 - __Capturing and Analysing DNS traffic:__
   - There are two main methods of capturing network traffic:
-    - Passive traffic capture: You can do this by runing `tcpdump` on the network interfaces to cache only server active traffic capture
+    - Passive traffic capture: You can do this by running `tcpdump` on the network interfaces to cache only server active traffic capture
     - Active traffic capture: This is needed when there is no direct access to the computer systems involved or the network path you wish to capture, and so to intercept it, you would need to implement a more active technique such as placing a proxy or a network tap in the middle of the tap.
-  - Capture point: the precise location where to setup the traffic listener
+  - Capture point: the precise location where to set up the traffic listener
   - Always try to determine the best capture point wisely
 
 - __Constructing DNS Packets:__
   - Scapy is a powerful packet manipulation program which is capable of forging packets from scratch, ..etc.
-  - Each Packet in Scapy needs to Follow the structure of teh TCP/IP model starting with the network layer, followed by the Transport layer, etc.
+  - Each Packet in Scapy needs to Follow the structure of the TCP/IP model starting with the network layer, followed by the Transport layer, etc.
   - Installing Scapy:
     - `sudo apt-get update -y`
     - `sudo apt-get install python3-pip`
     - `sudo python3 -m pip install --pre scapy[complete]`
     - `sudo scapy`
+
+## DNS Troubleshooting
+
+- __Troubleshooting Methodology:__
+  - DNS problems can be classified into two broad categories:
+    - Configuration issues: refer to problems arising when setting up the DNS infrastructure for the first time and they are more related to projects than support work
+      - As such, they have a relatively low priority but we still need to resolve them in a timely fashion
+      - Troubleshooting:
+        - Do the properties of your system match the ones outlined in the guide (i.e OS, version, system, requirements, etc.)?
+        - Have the same resources been allocated to your machine?
+        - Have the reference software packages been installed successfully?
+        - Have you put in place any additional configuration or changed any other settings?
+        - Have any of the configuration steps you were instructed to take been skipped?
+        - Have any errors been encountered along the process?
+        - What do the packets tell you?
+        - What do the logs say?
+    - Break-and-Fix issues: These are incidents that can suddenly occur with an immediate negative impact on our environment
+      - These issues imply that the DNS setup had been working as expected for a certain period of time until something happened that disrupted the service
+      - The productivity of the end users will be affected
+      - It is a level-1 priority
+      - Troubleshooting:
+        - Define the problem
+        - Define the scope of the problem (who, what, when, how)
+        - Breakdown your infrastructure into distinctive logical areas
+        - Create a list of suspect components to check for each section of your environment
+        - Review each component in one section before moving on to the next one. Always start with the easiest components
+        - Use the Corson Technique <https://collegeinfogeek.com/corson-technique/>
+        - If all else fails, escalate
+      - Annotating your findings as you are troubleshooting break-and-fix issues is crucial
+
+## Troubleshooting DNS Latency Issues
+
+- Typical causes for DNS latency:
+  - High resource utilization on the DNS server
+  - Problems related to the DNS software, e.g. Bind9
+  - Bandwidth saturation on the DNS server
+  - Network related issues
+- Wireshark is one of the best tools to use when troubleshooting DNS latency
+- The DNS time field only resides in DNS response messages only
+
+## DNS Security
+
+- __DNS Cache Poisoning Attack:__
+  - DNS cache poisoning or DNS spoofing
+  - By poisoning the cache of the DNS resolver, the attacker can redirect the end user to a fraudulent website.
+    - The purpose of the DNS cache poisoning attack is to abuse the way DNS caches work by poisoning the resolver's cache so that name lookups originated from a client are answered by a malicious actor who redirects the end user to a fraudulent web page
+    - That website is typically a mirror image of a legitimate site so that once the end users are redirected there, they are tricked into a specific set of actions engineered by the attacker
+    - Some actions involve:
+      - Presenting authentication prompts encouraging the victim to supply their credentials
+      - Luring the user into downloading files infected with malware
+    - Impact:
+      - Stolen credentials
+      - Data theft
+      - Critical data encrypted with ransomware
+      - Compromised hosts that become bots as part of a botnet
+  - Threat Vectors:
+    - *Man in the Middle Attack:* The attacker places themselves between the client and the server
+      - By using tools such as Arpspoof, it can modify the Mac addresses in the DNS resolver's ARP table, causing it to think that the attacker's computer belongs to the client. The client is also tricked into thinking that the system controlled by the attacker is the DNS server
+      - As such, the attacker can use tools such as DNS spoof to direct all DNS requests to the fake sites designed by the attacker
+    - *DNS Server Hijacking:* This entails compromising the DNS resolver directly with a goal of injecting false data into its cache to achieve DNS spoofing and redirect the client to the attacker's site
+    - *Client Machine Hijacking:* This involves compromising the client directly
+      - Once the attacker has gained access to the client, they can proceed with injecting false DNS data in the hosts file, which is consulted by the OS before DNS kicks in
+      - The attacker can then accomplish DNS spoofing without touching the DNS resolver, since name requests originated by the compromised client will never make it there.
+    - *Birthday Attack:* Most sophisticated DNS cache poisoning vector
+      - The attacker tries to guess the transaction ID of the client's DNS requests so that they can respond to it with a false response of their own, this poisoning the DNS resolver's cache, which in turn then serves the attacker's IP address
+  - Mitigation Measures:
+    - DNSSEC: Domain Name Security Extensions
+      - It is a means of verifying DNS data integrity and origin
+      - It uses public key cryptography to verify and authenticate data thus preventing forgery
+      - Downside:
+        - When the DNS resolver needs to verify the signature with the authoritative DNS server, the name resolution process slows down, which is why it is not widely adopted
+    - DNS over HTTPS (DoH)
+    - DNS over TLS (DoT)
+      - These standards (DoH and DoT) are designed to keep DNS requests secure without sacrificing speed like DNSSEC
+      - Unlike DNSSEC which verified the identity of the DNS root servers and authoritative name server in communication with DNS resolvers, DoH and DoT encrypt DNS traffic, making it harder for attackers to tamper with DNS requests and responses while in transit
+      - Difference between DoH and DoT:
+        - DoH uses port 443
+        - DoT used port 853
+    - Patching DNS software:
+      - For example, if you have configured your resolver with Bind, make sure that you are using the latest version of Bind so as to keep up to date with the latest security patches
+    - Harden the client systems by applying appropriate endpoint security in order to reduce the attack surface to prevent client machine hijacking attacks
+  - Encrypting the DNS traffic, patching all DNS-related software and enforcing endpoint security are some of the strongest mitigation measures
+
+- __NXDOMAIN Attack:__
+  - NXDOMAIN is a DNS-based Denial of Service (DoS) type of attack since it impacts the availability of the DNS service by flooding it with requests for invalid or non-existent records
+  - The attacker can generate and transmit large volumes of unique, fake subdomains for each request sent to the DNS resolver. This is known as *random subdomain attack*
+  - The DNS resolvers continues attempts to resolve the fake domains in the attacker's name lookup requests which leads to high resource utilization on the DNS resolver itself, which makes it difficult to respond to legitimate requests
+  - On top of that, since the records queried by the attacker do not exist, the DNS resolver cache is filled up with NxDomain replies, slowing down the server's response time for legitimate requests
+  - The NXDOMAIN attack takes advantage of negative caching.
+  - When the cache gets filled up with nxdomain responses, valid cache entries get pushed out resulting in further service degradation
+  - The fake subdomains are typically prepended to a legitimate apex domain such as example.com
+  - Consequently, the same domain attack can also cause performance degradation on the authoritative name servers, which try to resolve the malicious name queries received
+  - For a script to imitate an nxdomain attack:
+    - `git clone <https://github.com/nuck22d/nxdomain_attack.git>`
+    - `cd nxdomain_attack`
+    - `chmod u+x ndomain_attack.sh`
+    - `./nxdomain_attack.sh`
+  - Mitigation Measures:
+    - Restrict DNS queries to trusted clients only
+    - Block the offending source IP addresses
+    - Flush the cache on the DNS resolver
+    - Use dedicated solutions by specialized vendors
+
+- __DNS Query Flood Attack:__
+  - The DNS query flood attack is another DoS attack that aims at disrupting the availability of a DNS server by flooding it with name requests
+  - Unlike the domain attack which involves queries against non-existent records,the DNS query flood attack entails the transmission of legitimate requests but at an extremely high volume
+  - If successful, the targeted name servers slows down or becomes totally unresponsive to legitimate requests due to high resource utilization
+  - It is a 'direct' DoS attack, which is different from the DNS Amplification Attack which is a 'reflective' DoS attack
+  - By design, `dnsperf` is a DNS performance testing tool
+  - Building dnsperf:
+    - `git clone https://github.com/DNS-OARC/dnsperf.git`
+    - `cd dnsperf`
+    - `.autogen.sh`
+    - `./configure`
+    - `make`
+    - `make install`
+  - Mitigation Measures:
+    - Restrict DNS queries to trusted clients
+    - Block the offending source IP addresses
+    - Rate limiting
+    - Deploy a cache only DNS server in front of of the authoritative name server if possible, so that the cache-only server can serve cached queries that do not get forwarded all the way to the name server
+    - Overprovision bandwidth on the name server itself so that it can handle a greater amount of requests
+
+- __Phantom Domain Attack:__
+  - In a phantom domain attack the attacker uses real domains they have set up whose name servers have been configured to either respond very slowly to requests or not respond at all
+  - The phantom domain attack is another type of DNS-based DoS attack
+    - The attacker lays the groundwork by first configuring several domains
+    - Then they configure the authoritative name servers of those domains to either respond to requests very slowly or not at all
+    - They then proceed to send a huge number of queries to the victim's DNS resolver, which has to spend time and resources doing the recursion against the records of the phantom domains whose name servers will simply not respond
+  - Mitigation Measures:
+    - Rate limiting
+    - Restricting requests queries per server and per zone
+    - Using dedicated solutions by specialized vendors.
+      - For example, F5's Big-ip is designed to time out the connection and release the requests in the queue so that the resolver does not need to wait for responses that will never come
 
 ## References
 
